@@ -3,6 +3,11 @@ h2{
     display: flex;
     padding-top: 20px;
     justify-content: center;
+    
+      font-family: "Roboto Slab", serif;
+      font-optical-sizing: auto;
+      font-weight: weight 500;
+      font-style: normal;
 }
 .container-fluid.delivery{
     display: flex;
@@ -10,13 +15,19 @@ h2{
     text-align: center;
 }
 .boton{
-    padding-top: 30px;
+    padding-top: 20px;
 }
 .row{
+    width: 100%;
     display: flex;
     justify-content: space-around;
+    padding-top: 20px;
+}
+main{
+    background-color: black;
+    padding-bottom: 10PX;
 }
 footer{
-    margin-top: 20px;
     background-color: orange;
+    padding-bottom: 15PX;
 }

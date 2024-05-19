@@ -15,11 +15,15 @@ function capturarEdad(){
     let edadusuario= parseInt(prompt("Ingresa tu edad"))
     if(edadusuario>=18 && edadusuario<=40){
         alert("Bienvenido/a " + nombre)
+        return true
     }else{
         alert("NO CUMPLES CON LA EDAD")
+        return false
     }
 }
 
 
 capturarNombre()
-capturarEdad()
+if(!capturarEdad()){
+    window.close();
+}
