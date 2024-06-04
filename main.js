@@ -21,13 +21,80 @@ function capturarEdad(){
         return false
     }
 }
-
 capturarNombre()
 if(!capturarEdad()){
     window.close();
 }
+/////////////////////////////////////////////////////////////////////////////////
 
+/* localStorage.removeItem("allProducts") al teminar la compra se aplica  */ 
 
+////////////////////////////////////////////////////////////////////////////////
+
+updateTable();
+
+const botoncompra= document.querySelectorAll(`#boton`);
+botoncompra.forEach(botoncompra=>{
+    botoncompra.addEventListener(`click`, botoncompraclicked);
+});
+
+function botoncompraclicked(event){
+    const bot= event.target;
+    const card= bot.closest(`.card`)
+
+    const cardtext= card.querySelector(`.card-text`).textContent;
+    const itemprice= card.querySelector(`.item-price`).textContent;
+    const cardImgTop= card.querySelector(`.card-img-top`).src;
+    console.log(`botoncompraclicked => cardtext`, cardtext, itemprice, cardImgTop);
+    addItemToRow(cardtext, itemprice, cardImgTop);
+}
+
+function addItemToRow(cardtext, itemprice, cardImgTop){
+    addEntry(cardtext, itemprice);
+    updateTable();
+}
+
+function updateTable(){
+    let total= 0; 
+    const rowShopping= document.querySelector(`#shopping`);
+    let existingProducts = JSON.parse(localStorage.getItem("allProducts"));
+    if(existingProducts == null) 
+        existingProducts = [];
+    let shoppingContent = "";
+    existingProducts.forEach((product, index) => {
+        let valueProduct = product.itemprice.replace("$","").replace(".","");
+        total = total + parseInt(valueProduct);
+        shoppingContent= shoppingContent +`
+        <tr>
+            <td>${index+1}</td>
+            <td>${product.cardtext}</td>
+            <td>${product.itemprice}</td>
+        </tr>    `;
+        
+    });
+
+    shoppingContent= shoppingContent +`
+        <tr>
+            <td></td>
+            <td>TOTAL</td>
+            <td>$${total}</td>
+        </tr>    `;
+    shopping.innerHTML= shoppingContent;
+}
+
+function addEntry(cardtext, itemprice) {
+    var existingProducts = JSON.parse(localStorage.getItem("allProducts"));
+    if(existingProducts == null) existingProducts = [];
+    var entry = {
+        "cardtext": cardtext,
+        "itemprice": itemprice
+    };
+    localStorage.setItem("entry", JSON.stringify(entry));
+    existingProducts.push(entry);
+    localStorage.setItem("allProducts", JSON.stringify(existingProducts));
+};
+//////////////////////////////////////////////////////////////////////////
+/*
 let sumaTotal = 0
 const Producto = function(nombre, precio, cantidades) {
     this.nombre = nombre
@@ -57,15 +124,13 @@ function filtrarproductos() {
         alert("No hay coincidencias con " + palabraclave)
     }
 }
-
 let continuar = true;
-
 while(continuar){
     filtrarproductos()
-    
     let preguntaContinua = prompt("Desea continuar comprando?(S/N)").toUpperCase()
     if(preguntaContinua==='N')
     {
         continuar = false
     }
 }
+*/
