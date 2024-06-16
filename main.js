@@ -1,5 +1,5 @@
 
-/* let nombre = ""
+let nombre = ""
 function capturarNombre() {
     let nombreInvalido = true
     while (nombreInvalido === true) {
@@ -22,12 +22,11 @@ function capturarEdad(){
         return false
     }
 }
-    
+
 capturarNombre()
 if(!capturarEdad()){
     window.close();
 }
- */
 updateTable();
 
 const botoncompra = document.querySelectorAll(`#boton`);
