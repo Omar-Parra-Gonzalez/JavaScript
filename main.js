@@ -1,5 +1,5 @@
 
-let nombre = ""
+/* let nombre = ""
 function capturarNombre() {
     let nombreInvalido = true
     while (nombreInvalido === true) {
@@ -10,6 +10,7 @@ function capturarNombre() {
         }
     }
 }
+
 function capturarEdad(){
     alert(nombre + " para ingresar a este sitio debes ser mayor de edad")
     let edadusuario= parseInt(prompt("Ingresa tu edad"))
@@ -21,71 +22,66 @@ function capturarEdad(){
         return false
     }
 }
+    
 capturarNombre()
 if(!capturarEdad()){
     window.close();
 }
-/////////////////////////////////////////////////////////////////////////////////
-
-/* localStorage.removeItem("allProducts") al teminar la compra se aplica  */ 
-
-////////////////////////////////////////////////////////////////////////////////
-
+ */
 updateTable();
 
-const botoncompra= document.querySelectorAll(`#boton`);
-botoncompra.forEach(botoncompra=>{
+const botoncompra = document.querySelectorAll(`#boton`);
+botoncompra.forEach(botoncompra => {
     botoncompra.addEventListener(`click`, botoncompraclicked);
 });
 
-function botoncompraclicked(event){
-    const bot= event.target;
-    const card= bot.closest(`.card`)
+function botoncompraclicked(event) {
+    const bot = event.target;
+    const card = bot.closest(`.card`)
 
-    const cardtext= card.querySelector(`.card-text`).textContent;
-    const itemprice= card.querySelector(`.item-price`).textContent;
-    const cardImgTop= card.querySelector(`.card-img-top`).src;
-    console.log(`botoncompraclicked => cardtext`, cardtext, itemprice, cardImgTop);
-    addItemToRow(cardtext, itemprice, cardImgTop);
+    const cardtext = card.querySelector(`.card-text`).textContent;
+    const itemprice = card.querySelector(`.item-price`).textContent;
+    console.log(`botoncompraclicked => cardtext`, cardtext, itemprice);
+    addItemToRow(cardtext, itemprice);
 }
 
-function addItemToRow(cardtext, itemprice, cardImgTop){
+function addItemToRow(cardtext, itemprice) {
     addEntry(cardtext, itemprice);
     updateTable();
 }
 
-function updateTable(){
-    let total= 0; 
-    const rowShopping= document.querySelector(`#shopping`);
+function updateTable() {
+    let total = 0;
+    const rowShopping = document.querySelector(`#shopping`);
     let existingProducts = JSON.parse(localStorage.getItem("allProducts"));
-    if(existingProducts == null) 
+    if (existingProducts == null)
         existingProducts = [];
     let shoppingContent = "";
     existingProducts.forEach((product, index) => {
-        let valueProduct = product.itemprice.replace("$","").replace(".","");
+        let valueProduct = product.itemprice.replace("$", "").replace(".", "");
         total = total + parseInt(valueProduct);
-        shoppingContent= shoppingContent +`
+        shoppingContent = shoppingContent + `
         <tr>
-            <td>${index+1}</td>
+            <td>${index + 1}</td>
             <td>${product.cardtext}</td>
             <td>${product.itemprice}</td>
         </tr>    `;
-        
+
     });
 
-    shoppingContent= shoppingContent +`
+    shoppingContent = shoppingContent + `
         <tr>
             <td></td>
-            <td>TOTAL</td>
-            <td>$${total}</td>
+            <td><b>TOTAL:</b></td>
+            <td><b>$${total}</b></td>
         </tr>    `;
-    shopping.innerHTML= shoppingContent;
+    shopping.innerHTML = shoppingContent;
 }
 
 function addEntry(cardtext, itemprice) {
-    var existingProducts = JSON.parse(localStorage.getItem("allProducts"));
-    if(existingProducts == null) existingProducts = [];
-    var entry = {
+    let existingProducts = JSON.parse(localStorage.getItem("allProducts"));
+    if (existingProducts == null) existingProducts = [];
+    let entry = {
         "cardtext": cardtext,
         "itemprice": itemprice
     };
@@ -93,7 +89,53 @@ function addEntry(cardtext, itemprice) {
     existingProducts.push(entry);
     localStorage.setItem("allProducts", JSON.stringify(existingProducts));
 };
-//////////////////////////////////////////////////////////////////////////
+
+const finalizarCompraBtn = document.getElementById('finalizarCompra');
+const agregarAlCarritoBtn = document.getElementById('agregarAlCarrito');
+const compraForm = document.getElementById('pedidoForm');
+const formInputs = compraForm.querySelectorAll('input[required]');
+
+function verificarCampos() {
+    let allFilled = true;
+    formInputs.forEach(input => {
+        if (!input.value.trim()) {
+            allFilled = false;
+        }
+    });
+    return allFilled;
+}
+
+agregarAlCarritoBtn.addEventListener('click', function () {
+    formularioContainer.classList.toggle('oculto');
+});
+
+const modal = new bootstrap.Modal(document.getElementById('exampleModal'));
+
+const pedidoForm = document.getElementById("pedidoForm");
+pedidoForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    const nombre = document.getElementById("nombre").value;
+    const direccion = document.getElementById("direccion").value;
+    const telefono = document.getElementById("telefono").value;
+    document.getElementById("modalNombre").textContent = nombre;
+    document.getElementById("modalDireccion").textContent = direccion;
+    document.getElementById("modalTelefono").textContent = telefono;
+    modal.show();
+});
+
+let btnfinalizar= document.getElementById(`btnfinalizar`);
+var myToastEl = document.getElementById('liveToast')
+var myToast = bootstrap.Toast.getOrCreateInstance(myToastEl) 
+
+btnfinalizar.addEventListener('click', function () {
+    modal.hide();
+    localStorage.removeItem("allProducts");
+    updateTable();
+    myToast.show();
+    pedidoForm.reset();
+});
+
+///////////////////////////////////////////////////////////////////////////
 /*
 let sumaTotal = 0
 const Producto = function(nombre, precio, cantidades) {
